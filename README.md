@@ -35,7 +35,7 @@ $client = new \Savvy\Client(['environment_token' => 'tok-sample']);
 When retrieving values for settings a context can be provided that can change the value based on unique attributes of the context.
 
 ```php
-$context = new \Savvy\Settings\Entities\Context\Context('user', 'John Doe', 'john-doe'[
+$context = new \Savvy\Settings\Entities\Context\Context('user', 'John Doe', 'john-doe', [
     new \Savvy\Settings\Entities\Context\Attribute('key', [
         new \Savvy\Settings\Entities\Context\Value('value'),
     ]),

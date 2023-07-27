@@ -50,9 +50,14 @@ class HttpClient
                 'Accept' => 'application/json',
                 'X-API-KEY' => $this->config->get('environment_token'),
                 'Content-Type' => 'application/json; charset=UTF-8',
-                'X-SAVVY-CONTEXT' => json_encode($this->config->get('context')),
             ]
         ];
+
+        $context = $this->config->get('context');
+        if ($context != null)
+        {
+            $options['x-savvy-context'] = json_encode($context);
+        }
 
         $endpoint = "v1{$endpoint}";
 
