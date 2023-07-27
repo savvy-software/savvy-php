@@ -7,7 +7,6 @@ class Config
     const DEFAULT_CONFIGURATION = [
         'api_endpoint' => 'https://api.havesavvy.com/',
         'environment_token' => '',
-        'context' => null,
         'guzzle' => []
     ];
 
@@ -32,6 +31,11 @@ class Config
 
     public function get($key)
     {
+        if (!array_key_exists($key, $this->config))
+        {
+            return null;
+        }
+        
         return $this->config[$key];
     }
 

@@ -44,20 +44,17 @@ class HttpClient
 
     private function request($method, $endpoint, $payload = null)
     {
+        $context = $this->config->get('context');
+
         $options = [
             'body' => $payload != null ? json_encode($payload) : null,
             'headers' => [
                 'Accept' => 'application/json',
                 'X-API-KEY' => $this->config->get('environment_token'),
                 'Content-Type' => 'application/json; charset=UTF-8',
+                'X-SAVVY-CONTEXT' => $context != null ? json_encode($context) : null,
             ]
         ];
-
-        $context = $this->config->get('context');
-        if ($context != null)
-        {
-            $options['x-savvy-context'] = json_encode($context);
-        }
 
         $endpoint = "v1{$endpoint}";
 
