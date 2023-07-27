@@ -7,6 +7,7 @@ class Config
     const DEFAULT_CONFIGURATION = [
         'api_endpoint' => 'https://api.havesavvy.com/',
         'environment_token' => '',
+        'context' => null,
         'guzzle' => []
     ];
 
