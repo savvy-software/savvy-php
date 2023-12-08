@@ -24,7 +24,7 @@ class Setting
 
     function getValue() : bool|float|int|string {
         switch($this->type) {
-            case 'bool':
+            case 'boolean':
                 return $this->getBoolean();
             case 'number':
                 return $this->getNumber();
@@ -35,7 +35,7 @@ class Setting
     }
 
     private function getBoolean() : bool {
-        return (bool)$this->value->boolean;
+        return (bool)($this->value->boolean);
     }
 
     private function getNumber() : float|int {
@@ -44,6 +44,6 @@ class Setting
     }
 
     private function getString() : string {
-        return (string)$this->value->string;
+        return $this->value->string;
     }
 }
