@@ -16,12 +16,12 @@ class Client
         $this->settings = new Settings($client);
     }
 
-    public function setting($key)
+    public function setting($key) : \Savvy\Settings\Entities\Setting
     {
         return $this->settings->single($key);
     }
 
-    public function settings()
+    public function settings(): array
     {
         return $this->settings->all();
     }

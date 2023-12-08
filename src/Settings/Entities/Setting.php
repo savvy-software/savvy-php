@@ -7,18 +7,43 @@ class Setting
     static public function map(string $json) : Setting
     {
         $source = json_decode($json)->data->setting;
-        return new Setting($source->key, $source->name, $source->type, $source->value->boolean);
+        return new Setting($source->key, $source->name, $source->type, $source->value);
     }
 
     public string $key;
     public string $name;
     public string $type;
-    public bool $value;
+    private Object $value;
 
-    function __construct(string $key, string $name, string $type, bool $value) {
+    function __construct(string $key, string $name, string $type, Object $value) {
         $this->key = $key;
         $this->name = $name;
         $this->type = $type;
         $this->value = $value;
+    }
+
+    function getValue() : bool|float|int|string {
+        switch($this->type) {
+            case 'bool':
+                return $this->getBoolean();
+            case 'number':
+                return $this->getNumber();
+            case 'string':
+            default:
+                return $this->getString();
+        }
+    }
+
+    private function getBoolean() : bool {
+        return (bool)$this->value->boolean;
+    }
+
+    private function getNumber() : float|int {
+        $value = $this->value->number;
+        return is_int($value) ? (int)$value : (float)$value;
+    }
+
+    private function getString() : string {
+        return (string)$this->value->string;
     }
 }
