@@ -18,7 +18,7 @@ class Settings
         $result = $this->client->get($endpoint);
         $source = json_decode($result);
         
-        return array_map(fn($item) : Setting => new Setting($item->setting->key, $item->setting->name, $item->setting->type, $item->setting->value->boolean), $source->data);
+        return array_map(fn($item) : Setting => new Setting($item->setting->key, $item->setting->name, $item->setting->type, $item->setting->value), $source->data);
     }
 
     public function single($key) : Setting
