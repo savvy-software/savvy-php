@@ -53,7 +53,7 @@ class HttpClient
                 'X-API-KEY' => $this->config->get('environment_token'),
                 'Content-Type' => 'application/json; charset=UTF-8',
                 'X-SAVVY-CONTEXT' => $context != null ? json_encode($context) : null,
-                ...$headers,
+                ...$headers != null ? $headers : [],
             ]
         ];
 
