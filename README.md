@@ -57,24 +57,10 @@ $client = new \Savvy\Client();
 
 ### Retrieving Settings
 
-#### All settings
-
-```php
-$results = $client->settings();
-
-foreach ($results as $result)
-{
-    $key = $result->key;
-    $name = $result->name;
-    $type = $result->type;
-    $value = $result->value
-}
-```
-
 #### Single setting
 
 ```php
-$result = $client->setting('setting-key');
+$result = $client->setting('setting-key', 'type', 'default-value');
 
 $key = $result->key;
 $name = $result->name;
