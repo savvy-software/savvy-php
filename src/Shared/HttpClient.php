@@ -22,9 +22,9 @@ class HttpClient
         $this->client = new \GuzzleHttp\Client($options);
     }
 
-    public function get($endpoint)
+    public function get($endpoint, array $headers = null)
     {
-        return $this->request('GET', $endpoint);
+        return $this->request('GET', $endpoint, null, $headers);
     }
 
     public function put($endpoint, $payload = [])
@@ -42,7 +42,7 @@ class HttpClient
         return $this->request('DELETE', $endpoint, $payload);
     }
 
-    private function request($method, $endpoint, $payload = null)
+    private function request($method, $endpoint, $payload = null, array $headers = null)
     {
         $context = $this->config->get('context');
 
@@ -53,6 +53,7 @@ class HttpClient
                 'X-API-KEY' => $this->config->get('environment_token'),
                 'Content-Type' => 'application/json; charset=UTF-8',
                 'X-SAVVY-CONTEXT' => $context != null ? json_encode($context) : null,
+                ...$headers,
             ]
         ];
 

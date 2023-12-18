@@ -1,6 +1,9 @@
 <?php
 namespace Savvy\Settings;
 
+use Exception;
+use \Savvy\Exceptions\InvalidTokenException;
+use \Savvy\Exceptions\SettingNotFoundException;
 use \Savvy\Settings\Entities\Setting;
 
 class Settings
@@ -12,20 +15,22 @@ class Settings
         $this->client = $client;
     }
 
-    public function all() : array
+    public function single(string $key, string $type, string|bool|int|float $defaultValue = null) : Setting
     {
-        $endpoint = '/settings';
-        $result = $this->client->get($endpoint);
-        $source = json_decode($result);
-        
-        return array_map(fn($item) : Setting => new Setting($item->setting->key, $item->setting->name, $item->setting->type, $item->setting->value), $source->data);
-    }
+        $endpoint = "/settings/$key";
 
-    public function single($key) : Setting
-    {
-        $endpoint = '/settings/' . $key;
-        $result = Setting::map($this->client->get($endpoint));
-
-        return $result;
+        try
+        {
+            $result = Setting::map($this->client->get($endpoint, $defaultValue != null ? ['x-default-value' => $defaultValue] : null));
+            return $result;
+        }
+        catch (InvalidTokenException|SettingNotFoundException $e)
+        {
+            throw $e;
+        }
+        catch (Exception)
+        {
+            return new Setting($key, '', $type, (object)array($type => $defaultValue));
+        }
     }
 }
