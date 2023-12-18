@@ -2,10 +2,17 @@
 
 namespace Savvy\Settings\Entities;
 
+use \Savvy\Exceptions\MalformedResponseException;
+
 class Setting
 {
-    static public function map(string $json) : Setting
+    static public function map(string|null $json) : Setting
     {
+        if ($json == null)
+        {
+            throw new MalformedResponseException();
+        }
+
         $source = json_decode($json)->data->setting;
         return new Setting($source->key, $source->name, $source->type, $source->value);
     }
