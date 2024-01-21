@@ -24,7 +24,8 @@ class Settings {
         }
 
         try {
-            return $this->client->get($endpoint, $defaults != null ? ['x-default-value' => $defaults] : null);
+            $results = $this->client->get($endpoint, $defaults != null ? ['x-default-value' => $defaults] : null);
+            return array_map(fn($value): Setting => Setting::map($value), $results);
         } catch (InvalidTokenException $e) {
             throw $e;
         } catch (Exception) {
