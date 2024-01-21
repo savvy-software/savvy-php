@@ -20,12 +20,12 @@ class Settings {
 
         $defaults = null;
         if ($defaultValues != null) {
-            $defaults = json_encode(array_map(fn($value): array => $value->toArray(), $defaultValues));
+            $defaults = json_encode(array_map(fn($value): array => $value->toArray(), $defaultValues), true);
         }
 
         try {
             $results = json_decode($this->client->get($endpoint, $defaults != null ? ['x-default-value' => $defaults] : null));
-            return array_map(fn($value): Setting => new Setting($value->key, '', $value->type, (object)array($value->type => $value->value)), $results);
+            return array_map(fn($value): Setting => new Setting($value['key'], '', $value['type'], (object)array($value['type'] => $value['value'])), $results);
         } catch (InvalidTokenException $e) {
             throw $e;
         } catch (Exception) {
