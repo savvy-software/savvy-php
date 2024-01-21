@@ -1,6 +1,6 @@
 <?php
 
-namespace Savvy\Settings\Entities;
+namespace Savvy\Settings\Response\Entities;
 
 use \Savvy\Exceptions\MalformedResponseException;
 

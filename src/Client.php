@@ -16,7 +16,12 @@ class Client
         $this->settings = new Settings($client);
     }
 
-    public function setting(string $key, string $type, string|bool|float|int $defaultValue) : \Savvy\Settings\Entities\Setting
+    public function all(array $defaults)
+    {
+        return $this->settings->all($defaults);
+    }
+
+    public function setting(string $key, string $type, string|bool|float|int $defaultValue) : \Savvy\Settings\Response\Entities\Setting
     {
         return $this->settings->single($key, $type, $defaultValue);
     }

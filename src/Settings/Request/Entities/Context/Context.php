@@ -1,6 +1,6 @@
 <?php
 
-namespace Savvy\Settings\Entities\Context;
+namespace Savvy\Settings\Request\Entities\Context;
 
 class Context
 {
