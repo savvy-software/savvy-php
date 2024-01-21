@@ -25,6 +25,7 @@ class Settings {
 
         try {
             $results = json_decode($this->client->get($endpoint, $defaults != null ? ['x-default-value' => $defaults] : null), true);
+            print $results;
             return array_map(fn($value): Setting => new Setting($value['key'], '', $value['type'], (object)array($value['type'] => $value['value'])), $results);
         } catch (InvalidTokenException $e) {
             throw $e;
