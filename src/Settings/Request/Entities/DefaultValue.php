@@ -8,7 +8,7 @@ class DefaultValue
 {
     public string $key;
     public string $type;
-    private string|bool|int|float $value;
+    public string|bool|int|float $value;
 
     function __construct(string $key, string $type, string|bool|int|float $value) {
         $this->key = $key;
