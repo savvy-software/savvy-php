@@ -27,7 +27,9 @@ SAVVY_ENVIRONMENT_TOKEN=tok-sample
 **Configuration during initialization**
 
 ```php
-$client = new \Savvy\Client(['environment_token' => 'tok-sample']);
+use \Savvy\Client;
+
+$client = new Client(['environment_token' => 'tok-sample']);
 ```
 
 ## Context
@@ -35,13 +37,18 @@ $client = new \Savvy\Client(['environment_token' => 'tok-sample']);
 When retrieving values for settings a context can be provided that can change the value based on unique attributes of the context.
 
 ```php
-$context = new \Savvy\Settings\Entities\Context\Context('user', 'John Doe', 'john-doe', [
-    new \Savvy\Settings\Entities\Context\Attribute('key', [
-        new \Savvy\Settings\Entities\Context\Value('value'),
+use \Savvy\Client;
+use \Savvy\Settings\Request\Entities\Context\Attribute;
+use \Savvy\Settings\Request\Entities\Context\Context;
+use \Savvy\Settings\Request\Entities\Context\Value;
+
+$context = new Context('user', 'John Doe', 'john-doe', [
+    new Attribute('key', [
+        new Value('value'),
     ]),
 ]);
 
-$client = new \Savvy\Client([
+$client = new Client([
     'environment_token' => 'tok-sample-token',
     'context' => $context,
 ]);
@@ -52,12 +59,29 @@ $client = new \Savvy\Client([
 Before retrieving a setting or flag, create a new client. If you configured your environment token key via environment variables there's nothing to add. Otherwise, see the example above.
 
 ```php
-$client = new \Savvy\Client();
+use \Savvy\Client;
+
+$client = new Client();
 ```
 
 ### Retrieving Settings
 
-#### Single setting
+#### All Settings
+
+```php
+use \Savvy\Settings\Request\Entities\DefaultSetting;
+
+$result = $client->all([
+    new DefaultSetting('setting-key', 'type', 'default-value'),
+]);
+
+$key = $result->key;
+$name = $result->name;
+$type = $result->type;
+$value = $result->value
+```
+
+#### Single Setting
 
 ```php
 $result = $client->setting('setting-key', 'type', 'default-value');
