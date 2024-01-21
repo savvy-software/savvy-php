@@ -24,7 +24,7 @@ class Settings {
         }
 
         try {
-            $result = $this->client->get($endpoint, $defaults != null ? ['x-default-value' => $defaults] : null);
+            return $this->client->get($endpoint, $defaults != null ? ['x-default-value' => $defaults] : null);
         } catch (InvalidTokenException $e) {
             throw $e;
         } catch (Exception) {
