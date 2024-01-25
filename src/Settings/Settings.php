@@ -26,12 +26,12 @@ class Settings {
 
         $contexts = null;
         if ($context != null) {
-            $contexts = json_encode($contexts);
+            $contexts = json_encode($context);
         }
 
         $headers = [
             'X-DEFAULT-VALUE' => $defaults,
-            'X-SAVVY-CONTEXT' => $context,
+            'X-SAVVY-CONTEXT' => $contexts,
         ];
 
         try {
@@ -39,7 +39,9 @@ class Settings {
             return array_map(fn($value): Setting => new Setting($value['setting']['key'], '', $value['setting']['type'], (object)$value['setting']['value']), $results['data']);
         } catch (InvalidTokenException $e) {
             throw $e;
-        } catch (Exception) {
+        } catch (Exception $e) {
+            report($e);
+            
             if ($defaultValues != null) {
                 return array_map(fn($value): Setting => new Setting($value->key, '', $value->type, (object)array($value->type => $value->value)), $defaultValues);
             }
@@ -57,12 +59,12 @@ class Settings {
 
         $contexts = null;
         if ($context != null) {
-            $contexts = json_encode($contexts);
+            $contexts = json_encode($context);
         }
 
         $headers = [
             'X-DEFAULT-VALUE' => $default->toJson(),
-            'X-SAVVY-CONTEXT' => $context,
+            'X-SAVVY-CONTEXT' => $contexts,
         ];
 
         $endpoint = "/settings/$key";
