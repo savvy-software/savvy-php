@@ -72,8 +72,8 @@ $client = new Client();
 ```php
 use \Savvy\Settings\Request\Entities\DefaultSetting;
 
-$result = $client->all([
-    new DefaultSetting(null, 'setting-key', 'type', 'default-value'),
+$result = $client->all(null, [
+    new DefaultSetting('setting-key', 'type', 'default-value'),
 ]);
 
 $key = $result->key;
@@ -85,7 +85,7 @@ $value = $result->value
 #### Single Setting
 
 ```php
-$result = $client->setting('setting-key', 'type', 'default-value');
+$result = $client->setting(null, 'setting-key', 'type', 'default-value');
 
 $key = $result->key;
 $name = $result->name;
