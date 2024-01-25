@@ -2,6 +2,7 @@
 namespace Savvy;
 
 use \Savvy\Settings\Settings;
+use \Savvy\Settings\Request\Entities\Context\Context;
 use \Savvy\Shared\HttpClient;
 
 class Client
@@ -16,13 +17,13 @@ class Client
         $this->settings = new Settings($client);
     }
 
-    public function all(array $defaults)
+    public function all(Context $context = null, array $defaults = null)
     {
-        return $this->settings->all($defaults);
+        return $this->settings->all($context, $defaults);
     }
 
-    public function setting(string $key, string $type, string|bool|float|int $defaultValue) : \Savvy\Settings\Response\Entities\Setting
+    public function setting(Context $context = null, string $key, string $type, string|bool|float|int $defaultValue) : \Savvy\Settings\Response\Entities\Setting
     {
-        return $this->settings->single($key, $type, $defaultValue);
+        return $this->settings->single($context, $key, $type, $defaultValue);
     }
 }

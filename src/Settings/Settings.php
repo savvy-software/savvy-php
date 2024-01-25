@@ -6,6 +6,7 @@ use \Savvy\Exceptions\InvalidTokenException;
 use \Savvy\Exceptions\NoResponseException;
 use \Savvy\Exceptions\SettingNotFoundException;
 use \Savvy\Settings\Request\Entities\DefaultValue;
+use \Savvy\Settings\Request\Entities\Context\Context;
 use \Savvy\Settings\Response\Entities\Setting;
 
 class Settings {
@@ -15,7 +16,7 @@ class Settings {
         $this->client = $client;
     }
 
-    public function all(array $defaultValues = null) : array {
+    public function all(Context $context = null, array $defaultValues = null) : array {
         $endpoint = '/settings';
 
         $defaults = null;
@@ -23,8 +24,18 @@ class Settings {
             $defaults = json_encode(array_map(fn($value): array => $value->toArray(), $defaultValues));
         }
 
+        $contexts = null;
+        if ($context != null) {
+            $contexts = json_encode($contexts);
+        }
+
+        $headers = [
+            'X-DEFAULT-VALUE' => $defaults,
+            'X-SAVVY-CONTEXT' => $context,
+        ];
+
         try {
-            $results = json_decode($this->client->get($endpoint, $defaults != null ? ['x-default-value' => $defaults] : null), true);
+            $results = json_decode($this->client->get($endpoint, $headers), true);
             return array_map(fn($value): Setting => new Setting($value['setting']['key'], '', $value['setting']['type'], (object)$value['setting']['value']), $results['data']);
         } catch (InvalidTokenException $e) {
             throw $e;
@@ -37,16 +48,27 @@ class Settings {
         }
     }
 
-    public function single(string $key, string $type, string|bool|int|float $defaultValue = null) : Setting {
+    public function single(Context $context = null, string $key, string $type, string|bool|int|float $defaultValue = null) : Setting {
+        
         $default = null;
         if ($defaultValue != null) {
             $default = new DefaultValue($key, $type, $defaultValue);
         }
 
+        $contexts = null;
+        if ($context != null) {
+            $contexts = json_encode($contexts);
+        }
+
+        $headers = [
+            'X-DEFAULT-VALUE' => $default->toJson(),
+            'X-SAVVY-CONTEXT' => $context,
+        ];
+
         $endpoint = "/settings/$key";
 
         try {
-            $result = Setting::map($this->client->get($endpoint, $default != null ? ['x-default-value' => $default->toJson()] : null));
+            $result = Setting::map($this->client->get($endpoint, $headers));
             return $result;
         } catch (InvalidTokenException|SettingNotFoundException $e) {
             throw $e;
