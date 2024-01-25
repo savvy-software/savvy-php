@@ -48,10 +48,11 @@ $context = new Context('user', 'John Doe', 'john-doe', [
     ]),
 ]);
 
-$client = new Client([
-    'environment_token' => 'tok-sample-token',
-    'context' => $context,
-]);
+$client = new Client();
+
+$results = $client->all($context);
+$result = $client->setting($context, 'setting-key', 'type', 'default-value');
+
 ```
 
 ## Usage
@@ -72,7 +73,7 @@ $client = new Client();
 use \Savvy\Settings\Request\Entities\DefaultSetting;
 
 $result = $client->all([
-    new DefaultSetting('setting-key', 'type', 'default-value'),
+    new DefaultSetting(null, 'setting-key', 'type', 'default-value'),
 ]);
 
 $key = $result->key;
